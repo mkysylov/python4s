@@ -24,17 +24,17 @@ import scala.sys.process._
 object Python extends Dynamic {
   // locate executable and shared library
   val Array(executable, libraryDirectory, libraryName) =
-    """python -c "
-      |import sys
-      |from distutils.sysconfig import get_config_var
-      |
-      |print(sys.executable)
-      |print(get_config_var('LIBDIR'))
-      |print('python{version}{abiflags}'.format(
-      |  version=get_config_var('VERSION'),
-      |  abiflags=(get_config_var('ABIFLAGS') or '')
-      |))
-      |"
+    s"""${sys.env.getOrElse("PYTHON4S_EXECUTABLE", "python")} -c "
+       |import sys
+       |from distutils.sysconfig import get_config_var
+       |
+       |print(sys.executable)
+       |print(get_config_var('LIBDIR'))
+       |print('python{version}{abiflags}'.format(
+       |  version=get_config_var('VERSION'),
+       |  abiflags=(get_config_var('ABIFLAGS') or '')
+       |))
+       |"
     """.stripMargin.!!.split('\n')
 
   private[python4s] val libPython = {
