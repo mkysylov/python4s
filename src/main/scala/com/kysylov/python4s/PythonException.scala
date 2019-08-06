@@ -21,7 +21,7 @@ import com.kysylov.python4s.Python.libPython
 class PythonException private(message: String) extends Exception(message)
 
 private[python4s] object PythonException {
-  private val traceback = Python.importModule("traceback")
+  private lazy val traceback = Python.importModule("traceback")
 
   /**
     * Retrieve and clear Python error indicator. Convert Python error to JVM exception.
