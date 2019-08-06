@@ -8,3 +8,5 @@ libraryDependencies ++= Seq(
   "com.github.jnr" % "jnr-ffi" % "2.1.10",
   "org.scalatest" %% "scalatest" % "3.0.8" % "test"
 )
+
+concurrentRestrictions in Global += Tags.limit(Tags.Test, 1)
