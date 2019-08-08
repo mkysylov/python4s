@@ -46,6 +46,9 @@ object Python extends Dynamic {
         .load(libraryName)
     )
 
+    // program name is required in order to set sys.exec_path
+    library.pySetProgramName("python")
+
     // initialize interpreter
     library.pyInitializeEx(false)
 

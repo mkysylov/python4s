@@ -774,6 +774,14 @@ public interface LibPython {
     // Initialization, Finalization, and Threads
 
     /**
+     * This function should be called before Py_Initialize() is called for the first time, if it is called at all.
+     * It tells the interpreter the value of the argv[0] argument to the main() function of the program.
+     *
+     * @param name const wchar_t*
+     */
+    void Py_SetProgramName(String name);
+
+    /**
      * Initialize the Python interpreter.
      * If initsigs is 0, it skips initialization registration of signal handlers.
      *

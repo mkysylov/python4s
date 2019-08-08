@@ -428,6 +428,8 @@ private[python4s] class PythonLibrary(self: LibPython) {
       case None => throw PythonException.fetch().get
     }
 
+  def pySetProgramName(name: String): Unit = self.Py_SetProgramName(name)
+
   def pyInitializeEx(initializeSignals: Boolean): Unit = {
     self.Py_InitializeEx(if (initializeSignals) 1 else 0)
     self.PyEval_InitThreads()
