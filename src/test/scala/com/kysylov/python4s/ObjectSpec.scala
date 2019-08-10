@@ -16,7 +16,6 @@
 
 package com.kysylov.python4s
 
-import com.kysylov.python4s.Python.libPython
 import org.scalatest.{FlatSpec, Matchers}
 
 class ObjectSpec extends FlatSpec with Matchers {
@@ -79,6 +78,131 @@ class ObjectSpec extends FlatSpec with Matchers {
   it should "calculate hash" in {
     val math = Python.importModule("math")
     math.e.hashCode() shouldEqual 1656245132797518850L.toInt
+  }
+
+  it should "support + operator" in {
+    val a = PythonObject(1)
+    val b = PythonObject(2)
+    (a + b).toInt shouldEqual 3
+
+    a += b
+    a.toInt shouldEqual 3
+  }
+
+  it should "support - operator" in {
+    val a = PythonObject(3)
+    val b = PythonObject(5)
+    (a - b).toInt shouldEqual -2
+
+    a -= b
+    a.toInt shouldEqual -2
+  }
+
+  it should "support * operator" in {
+    val a = PythonObject(2)
+    val b = PythonObject(3)
+    (a * b).toInt shouldEqual 6
+
+    a *= b
+    a.toInt shouldEqual 6
+  }
+
+  ignore should "support @ operator" in {
+    ???
+  }
+
+  it should "support // operator" in {
+    val a = PythonObject(7)
+    val b = PythonObject(2)
+    (a `//` b).toDouble shouldEqual 3
+
+    a `//=` b
+    a.toDouble shouldEqual 3
+  }
+
+  it should "support / operator" in {
+    val a = PythonObject(7)
+    val b = PythonObject(2)
+    (a / b).toDouble shouldEqual 3.5
+
+    a /= b
+    a.toDouble shouldEqual 3.5
+  }
+
+  it should "support % operator" in {
+    val a = PythonObject(11)
+    val b = PythonObject(3)
+    (a % b).toInt shouldEqual 2
+
+    a %= b
+    a.toInt shouldEqual 2
+  }
+
+  it should "support ** operator" in {
+    val a = PythonObject(3)
+    val b = PythonObject(4)
+    (a ** b).toInt shouldEqual 81
+
+    a **= b
+    a.toInt shouldEqual 81
+  }
+
+  it should "support unary - operator" in {
+    (-PythonObject(2)).toInt shouldEqual -2
+  }
+
+  it should "support unary + operator" in {
+    val decimal = Python.importModule("decimal")
+    decimal.Decimal("1").copy_sign(+decimal.Decimal("-0")).toInt shouldEqual 1
+  }
+
+  it should "support unary ~ operator" in {
+    (~PythonObject(123)).toInt shouldEqual -124
+  }
+
+  it should "support << operator" in {
+    val a = PythonObject(7)
+    val b = PythonObject(2)
+    (a << b).toInt shouldEqual 28
+
+    a <<= b
+    a.toInt shouldEqual 28
+  }
+
+  it should "support >> operator" in {
+    val a = PythonObject(170)
+    val b = PythonObject(2)
+    (a >> b).toInt shouldEqual 42
+
+    a >>= b
+    a.toInt shouldEqual 42
+  }
+
+  it should "support & operator" in {
+    val a = PythonObject(10)
+    val b = PythonObject(3)
+    (a & b).toInt shouldEqual 2
+
+    a &= b
+    a.toInt shouldEqual 2
+  }
+
+  it should "support ^ operator" in {
+    val a = PythonObject(10)
+    val b = PythonObject(3)
+    (a ^ b).toInt shouldEqual 9
+
+    a ^= b
+    a.toInt shouldEqual 9
+  }
+
+  it should "support | operator" in {
+    val a = PythonObject(10)
+    val b = PythonObject(3)
+    (a | b).toInt shouldEqual 11
+
+    a |= b
+    a.toInt shouldEqual 11
   }
 
 }

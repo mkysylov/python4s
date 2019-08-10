@@ -48,9 +48,10 @@ class PythonObject(private[python4s] var reference: PythonReference) extends Dyn
   def apply(args: Seq[PythonObject] = Seq(),
             kwargs: Map[String, PythonObject] = Map()): PythonObject = {
     val argsReference = args.asPythonTuple.reference
-    val kwargsReference = kwargs.map({ (key: String, value: PythonObject) =>
+    val kwargsReference = kwargs.map({ keyValue: (String, PythonObject) =>
+      val (key, value) = keyValue
       PythonObject(key) -> value
-    }.tupled).asPythonDict.reference
+    }).asPythonDict.reference
 
     PythonObject(libPython.pyObjectCall(reference, argsReference, kwargsReference))
   }
