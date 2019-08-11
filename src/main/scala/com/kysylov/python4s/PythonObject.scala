@@ -18,6 +18,7 @@ package com.kysylov.python4s
 
 import com.kysylov.python4s.Python.libPython
 
+import scala.collection.mutable
 import scala.language.{dynamics, implicitConversions}
 
 class PythonObject(private[python4s] var reference: PythonReference) extends Dynamic {
@@ -220,6 +221,8 @@ class PythonObject(private[python4s] var reference: PythonReference) extends Dyn
 
   def toDouble: Double = libPython.pyFloatAsDouble(reference)
 
+  def toArray: Array[PythonObject] = toIterator.toArray
+
   def toSeq: Seq[PythonObject] = toIterator.toSeq
 
   def toSet: Set[PythonObject] = toIterator.toSet
@@ -313,7 +316,13 @@ object PythonObject {
     }
   }
 
-  implicit class `Seq asPython`(val seq: Seq[PythonObject]) extends AnyVal {
+  implicit class `Array asPython`(val array: Array[PythonObject]) extends AnyVal {
+    def asPythonList: PythonObject = mutable.ArraySeq.make(array).asPythonList
+
+    def asPythonTuple: PythonObject = mutable.ArraySeq.make(array).asPythonTuple
+  }
+
+  implicit class `Seq asPython`(val seq: collection.Seq[PythonObject]) extends AnyVal {
     def asPythonList: PythonObject = {
       val listReference = libPython.pyListNew(seq.length)
       seq.zipWithIndex.foreach { case (obj, index) =>
@@ -331,7 +340,7 @@ object PythonObject {
     }
   }
 
-  implicit class `Set asPython`(val set: Set[PythonObject]) extends AnyVal {
+  implicit class `Set asPython`(val set: collection.Set[PythonObject]) extends AnyVal {
     def asPythonSet: PythonObject = {
       val setReference = libPython.pySetNew(None)
       set.foreach(obj => libPython.pySetAdd(setReference, obj.reference))
@@ -339,7 +348,7 @@ object PythonObject {
     }
   }
 
-  implicit class `Map asPython`(val map: Map[PythonObject, PythonObject]) extends AnyVal {
+  implicit class `Map asPython`(val map: collection.Map[PythonObject, PythonObject]) extends AnyVal {
     def asPythonDict: PythonObject = {
       val dictReference = libPython.pyDictNew()
       map.foreach { case (key, value) =>
