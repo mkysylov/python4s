@@ -205,4 +205,28 @@ class ObjectSpec extends FlatSpec with Matchers {
     a.toInt shouldEqual 11
   }
 
+  it should "support < operator" in {
+    (PythonObject(1) < PythonObject(2)) shouldEqual true
+    (PythonObject(1) < PythonObject(1)) shouldEqual false
+    (PythonObject(1) < PythonObject(0)) shouldEqual false
+  }
+
+  it should "support <= operator" in {
+    (PythonObject(1) <= PythonObject(2)) shouldEqual true
+    (PythonObject(1) <= PythonObject(1)) shouldEqual true
+    (PythonObject(1) <= PythonObject(0)) shouldEqual false
+  }
+
+  it should "support > operator" in {
+    (PythonObject(1) > PythonObject(2)) shouldEqual false
+    (PythonObject(1) > PythonObject(1)) shouldEqual false
+    (PythonObject(1) > PythonObject(0)) shouldEqual true
+  }
+
+  it should "support >= operator" in {
+    (PythonObject(1) >= PythonObject(2)) shouldEqual false
+    (PythonObject(1) >= PythonObject(1)) shouldEqual true
+    (PythonObject(1) >= PythonObject(0)) shouldEqual true
+  }
+
 }
