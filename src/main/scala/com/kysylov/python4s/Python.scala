@@ -24,15 +24,16 @@ import scala.sys.process._
 object Python extends Dynamic {
   // locate executable and shared library
   val Array(executable, libraryDirectory, libraryName) =
-    s"""${sys.env.getOrElse("PYTHON4S_EXECUTABLE", "python")} -c "
+    s"""${sys.env.getOrElse("PYTHON", "python")} -c "
+       |import os
        |import sys
-       |from distutils.sysconfig import get_config_var
        |
        |print(sys.executable)
-       |print(get_config_var('LIBDIR'))
-       |print('python{version}{abiflags}'.format(
-       |  version=get_config_var('VERSION'),
-       |  abiflags=(get_config_var('ABIFLAGS') or '')
+       |print(os.path.join(sys.exec_prefix, 'lib'))
+       |print('python{major}.{minor}{abiflags}'.format(
+       |  major=sys.version_info.major,
+       |  minor=sys.version_info.minor,
+       |  abiflags=(sys.abiflags or '')
        |))
        |"
     """.stripMargin.!!.split('\n')
@@ -47,20 +48,17 @@ object Python extends Dynamic {
     )
 
     // program name is required in order to set sys.exec_path
-    library.pySetProgramName("python")
+    library.pySetProgramName(executable)
 
     // initialize interpreter
     library.pyInitializeEx(false)
 
-    // execute runtime fixes
+    // configure runtime
     library.pyRunSimpleString(
       s"""import sys
          |
-         |# Some Python modules expect to have at least one argument in sys.argv.
+         |# If there isn’t a script that will be run, the first entry in argv can be an empty string.
          |sys.argv = ['']
-         |
-         |# Some Python modules require sys.executable to return the path to the Python interpreter executable.
-         |sys.executable = '$executable'
          |
          |# Add working directory to module search path.
          |sys.path.insert(0, '')

@@ -17,7 +17,9 @@
 package com.kysylov.python4s;
 
 import jnr.ffi.Pointer;
+import jnr.ffi.annotations.LongLong;
 import jnr.ffi.annotations.Out;
+import jnr.ffi.byref.NumberByReference;
 import jnr.ffi.byref.PointerByReference;
 import jnr.ffi.types.ssize_t;
 
@@ -85,6 +87,21 @@ public interface LibPython {
      * @param tb  PyObject**
      */
     void PyErr_NormalizeException(PointerByReference exc, PointerByReference val, PointerByReference tb);
+
+    // Operating System Utilities
+
+    /**
+     * Decode a byte string from the locale encoding.
+     * Return a pointer to a newly allocated wide character string, use PyMem_RawFree() to free the memory.
+     * If size is not NULL, write the number of wide characters excluding the null character into *size.
+     * Return NULL on decoding error or memory allocation error.
+     * If size is not NULL, *size is set to (size_t)-1 on memory error or set to (size_t)-2 on decoding error.
+     *
+     * @param arg  const char*
+     * @param size size_t*
+     * @return wchar_t*
+     */
+    Pointer Py_DecodeLocale(String arg, @Out NumberByReference size);
 
     // Importing Modules
 
@@ -601,6 +618,7 @@ public interface LibPython {
      * @param obj PyObject*
      * @return long long
      */
+    @LongLong
     Long PyLong_AsLongLong(Pointer obj);
 
     // Boolean Objects
@@ -779,7 +797,7 @@ public interface LibPython {
      *
      * @param name const wchar_t*
      */
-    void Py_SetProgramName(String name);
+    void Py_SetProgramName(Pointer name);
 
     /**
      * Initialize the Python interpreter.

@@ -19,7 +19,7 @@ package com.kysylov.python4s
 import jnr.ffi.Pointer
 import jnr.ffi.byref.PointerByReference
 
-private[python4s] class PythonLibrary(self: LibPython) {
+private[python4s] class PythonLibrary(val self: LibPython) {
   def pyRunSimpleString(command: String): Boolean =
     self.PyRun_SimpleString(command) == 0
 
@@ -428,7 +428,10 @@ private[python4s] class PythonLibrary(self: LibPython) {
       case None => throw PythonException.fetch().get
     }
 
-  def pySetProgramName(name: String): Unit = self.Py_SetProgramName(name)
+  def pySetProgramName(name: String): Unit = {
+    val decodedName = self.Py_DecodeLocale(name, null)
+    self.Py_SetProgramName(decodedName)
+  }
 
   def pyInitializeEx(initializeSignals: Boolean): Unit = {
     self.Py_InitializeEx(if (initializeSignals) 1 else 0)
