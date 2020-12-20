@@ -186,53 +186,6 @@ public interface LibPython {
     Pointer PyObject_Str(Pointer o);
 
     /**
-     * Determine if the object o is callable.
-     * Return 1 if the object is callable and 0 otherwise.
-     *
-     * @param o PyObject*
-     * @return int
-     */
-    int PyCallable_Check(Pointer o);
-
-    /**
-     * Call a callable Python object callable,
-     * with arguments given by the tuple args, and named arguments given by the dictionary kwargs.
-     * args must not be NULL, use an empty tuple if no arguments are needed.
-     * If no named arguments are needed, kwargs can be NULL.
-     * Return the result of the call on success, or raise an exception and return NULL on failure.
-     *
-     * @param callable PyObject*
-     * @param args     PyObject*
-     * @param kwargs   PyObject*
-     * @return PyObject* (received reference)
-     */
-    Pointer PyObject_Call(Pointer callable, Pointer args, Pointer kwargs);
-
-    /**
-     * Call a callable Python object callable, with a variable number of PyObject* arguments.
-     * The arguments are provided as a variable number of parameters followed by NULL.
-     * Return the result of the call on success, or raise an exception and return NULL on failure.
-     *
-     * @param callable PyObject*
-     * @param args     ..., NULL
-     * @return PyObject* (received reference)
-     */
-    Pointer PyObject_CallFunctionObjArgs(Pointer callable, Pointer... args);
-
-    /**
-     * Calls a method of the Python object obj, where the name of the method is given as a Python string object in name.
-     * It is called with a variable number of PyObject* arguments.
-     * The arguments are provided as a variable number of parameters followed by NULL.
-     * Return the result of the call on success, or raise an exception and return NULL on failure.
-     *
-     * @param callable PyObject*
-     * @param name     PyObject*
-     * @param args     ..., NULL
-     * @return PyObject* (received reference)
-     */
-    Pointer PyObject_CallMethodObjArgs(Pointer callable, Pointer name, Pointer... args);
-
-    /**
      * Compute and return the hash value of an object o.
      * On failure, return -1.
      *
@@ -279,6 +232,55 @@ public interface LibPython {
      * @return PyObject* (received reference)
      */
     Pointer PyObject_GetIter(Pointer o);
+
+    // Call Protocol
+
+    /**
+     * Call a callable Python object callable,
+     * with arguments given by the tuple args, and named arguments given by the dictionary kwargs.
+     * args must not be NULL, use an empty tuple if no arguments are needed.
+     * If no named arguments are needed, kwargs can be NULL.
+     * Return the result of the call on success, or raise an exception and return NULL on failure.
+     *
+     * @param callable PyObject*
+     * @param args     PyObject*
+     * @param kwargs   PyObject*
+     * @return PyObject* (received reference)
+     */
+    Pointer PyObject_Call(Pointer callable, Pointer args, Pointer kwargs);
+
+    /**
+     * Call a callable Python object callable, with a variable number of PyObject* arguments.
+     * The arguments are provided as a variable number of parameters followed by NULL.
+     * Return the result of the call on success, or raise an exception and return NULL on failure.
+     *
+     * @param callable PyObject*
+     * @param args     ..., NULL
+     * @return PyObject* (received reference)
+     */
+    Pointer PyObject_CallFunctionObjArgs(Pointer callable, Pointer... args);
+
+    /**
+     * Calls a method of the Python object obj, where the name of the method is given as a Python string object in name.
+     * It is called with a variable number of PyObject* arguments.
+     * The arguments are provided as a variable number of parameters followed by NULL.
+     * Return the result of the call on success, or raise an exception and return NULL on failure.
+     *
+     * @param callable PyObject*
+     * @param name     PyObject*
+     * @param args     ..., NULL
+     * @return PyObject* (received reference)
+     */
+    Pointer PyObject_CallMethodObjArgs(Pointer callable, Pointer name, Pointer... args);
+
+    /**
+     * Determine if the object o is callable.
+     * Return 1 if the object is callable and 0 otherwise.
+     *
+     * @param o PyObject*
+     * @return int
+     */
+    int PyCallable_Check(Pointer o);
 
     // Number Protocol
 
