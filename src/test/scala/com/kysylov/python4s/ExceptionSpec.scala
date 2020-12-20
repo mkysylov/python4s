@@ -16,9 +16,10 @@
 
 package com.kysylov.python4s
 
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class ExceptionSpec extends FlatSpec with Matchers {
+class ExceptionSpec extends AnyFlatSpec with Matchers {
 
   "An exception wrapper" should "throw a python exception" in {
     val one = PythonObject(1)

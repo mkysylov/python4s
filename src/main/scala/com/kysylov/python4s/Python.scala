@@ -33,10 +33,10 @@ object Python extends Dynamic {
        |print('python{major}.{minor}{abiflags}'.format(
        |  major=sys.version_info.major,
        |  minor=sys.version_info.minor,
-       |  abiflags=(sys.abiflags or '')
+       |  abiflags=getattr(sys, 'abiflags', '')
        |))
        |"
-    """.stripMargin.!!.split('\n')
+    """.stripMargin.!!.split('\n').map(_.trim)
 
   private[python4s] val libPython = {
     // load shared library

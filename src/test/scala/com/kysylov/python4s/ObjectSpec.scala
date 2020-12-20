@@ -16,9 +16,10 @@
 
 package com.kysylov.python4s
 
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class ObjectSpec extends FlatSpec with Matchers {
+class ObjectSpec extends AnyFlatSpec with Matchers {
 
   "An object wrapper" should "support callable objects" in {
     val capWords = Python.importModule("string").capwords

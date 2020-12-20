@@ -16,9 +16,10 @@
 
 package com.kysylov.python4s
 
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class ReferenceSpec extends FlatSpec with Matchers {
+class ReferenceSpec extends AnyFlatSpec with Matchers {
 
   "A reference wrapper" should "increment and decrement the reference counter" in {
     val sys = Python.importModule("sys")
