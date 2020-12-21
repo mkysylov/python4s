@@ -23,6 +23,12 @@ private[python4s] class PythonLibrary(val self: LibPython) {
   def pyRunSimpleString(command: String): Boolean =
     self.PyRun_SimpleString(command) == 0
 
+  def pyRunString(str: String, start: Int, globals: PythonReference, locals: PythonReference): PythonReference =
+    PythonReference.receive(self.PyRun_String(str, start, globals.pointer, locals.pointer)) match {
+      case Some(result) => result
+      case None => throw PythonException.fetch().get
+    }
+
   def pyIncRef(o: Pointer): Unit = self.Py_IncRef(o)
 
   def pyDecRef(o: Pointer): Unit = self.Py_DecRef(o)
@@ -446,4 +452,8 @@ private[python4s] object PythonLibrary {
   val pyNE = 3
   val pyGT = 4
   val pyGE = 5
+
+  val pySingleInput = 256
+  val pyFileInput = 257
+  val pyEvalInput = 258
 }

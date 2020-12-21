@@ -27,7 +27,7 @@ class PythonObject(private[python4s] var reference: PythonReference) extends Dyn
 
   /**
     * Get item or call as a function.
-    * Call as a function if more than argument is provided or object is callable, otherwise get an item.
+    * Call as a function if more than one argument is provided or object is callable, otherwise get an item.
     *
     * @param args arguments
     * @return python object
@@ -75,8 +75,8 @@ class PythonObject(private[python4s] var reference: PythonReference) extends Dyn
     * @return python object
     */
   def applyDynamicNamed(methodName: String)(args: (String, PythonObject)*): PythonObject = selectDynamic(methodName)(
-    args.collect { case (key, value) if key.isEmpty => value }.toSeq,
-    args.filter { case (key, _) => !key.isEmpty }.toMap
+    args.collect { case (key, value) if key.isEmpty => value },
+    args.filter { case (key, _) => key.nonEmpty }.toMap
   )
 
   /**

@@ -108,8 +108,27 @@ class ObjectSpec extends AnyFlatSpec with Matchers {
     a.toInt shouldEqual 6
   }
 
-  ignore should "support @ operator" in {
-    ???
+  it should "support @ operator" in {
+    val dict = Map[PythonObject, PythonObject]().asPythonDict
+    val code =
+      """class Test:
+        |  def __matmul__(self, v):
+        |    return v + 1
+        |
+        |  def __imatmul__(self, v):
+        |    self.v = v + 2
+        |    return self
+        |
+        |test = Test()
+        |""".stripMargin
+
+    Python.libPython.pyRunString(code, PythonLibrary.pyFileInput, dict.reference, dict.reference)
+    val testObj = dict(PythonObject("test"))
+
+    (testObj `@` PythonObject(1)).toInt shouldEqual 2
+
+    testObj `@=` PythonObject(1)
+    testObj.v.toInt shouldEqual 3
   }
 
   it should "support // operator" in {

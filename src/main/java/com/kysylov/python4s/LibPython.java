@@ -37,6 +37,19 @@ public interface LibPython {
      */
     int PyRun_SimpleString(String command);
 
+    /**
+     * Execute Python source code from str in the context specified by the objects globals and locals.
+     * Globals must be a dictionary; locals can be any object that implements the mapping protocol.
+     * The parameter start specifies the start token that should be used to parse the source code.
+     *
+     * @param str     const char*
+     * @param start   int
+     * @param globals PyObject*
+     * @param locals  PyObject*
+     * @return PyObject* (received reference)
+     */
+    Pointer PyRun_String(String str, int start, Pointer globals, Pointer locals);
+
     // Reference Counting
 
     /**
