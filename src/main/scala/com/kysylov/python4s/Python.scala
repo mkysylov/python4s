@@ -86,8 +86,8 @@ object Python extends Dynamic {
     * @return python object
     */
   def applyDynamicNamed(methodName: String)(args: (String, PythonObject)*): PythonObject = builtins(methodName)(
-    args.collect { case (key, value) if key.isEmpty => value }.toSeq,
-    args.filter { case (key, _) => !key.isEmpty }.toMap
+    args.collect { case (key, value) if key.isEmpty => value },
+    args.filter { case (key, _) => key.nonEmpty }.toMap
   )
 
   /**
